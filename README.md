@@ -1,7 +1,5 @@
 # Creando Ambiente LocalHost de AWS Lambda
 
-# Creando Ambiente LocalHost de AWS Lambda
-
 ## Requisitos
 
 * Contenedor **Docker** versión 18 o superior.

@@ -5,22 +5,13 @@
 * Requisitos.
 * Configurando Cliente AWSCli.
 * Proyecto Lambda.
- * Crear un Proyecto.
 * Nuestro Código.
- * serverless.yml
- * Handley.py 
 * Probando nuestro Servicio Lambda.
 * Ultimo detalles.
 * Otros Simuladores.
  * Soporte AWS Lambda S3.
-  * serverless.yml
-  * Handley.py 
  * Soporte AWS CloudFront Edge Lambda.
-  * serverless.yml
-  * Handley.py 
  * Soporte Acceso a MySQL desde AWS Python Lambda
-  * serverless.yml
-  * Handley.py 
  * Instalando Cloud 9.
  * Instalando DynamoDB Localmente con Docker.
 

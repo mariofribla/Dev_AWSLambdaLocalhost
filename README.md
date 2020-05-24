@@ -1,5 +1,30 @@
 # Creando Ambiente LocalHost de AWS Lambda
 
+## INDICE
+
+* Requisitos.
+* Configurando Cliente AWSCli.
+* Proyecto Lambda.
+ * Crear un Proyecto.
+* Nuestro Código.
+ * serverless.yml
+ * Handley.py 
+* Probando nuestro Servicio Lambda.
+* Ultimo detalles.
+* Otros Simuladores.
+ * Soporte AWS Lambda S3.
+  * serverless.yml
+  * Handley.py 
+ * Soporte AWS CloudFront Edge Lambda.
+  * serverless.yml
+  * Handley.py 
+ * Soporte Acceso a MySQL desde AWS Python Lambda
+  * serverless.yml
+  * Handley.py 
+ * Instalando Cloud 9.
+ * Instalando DynamoDB Localmente con Docker.
+
+
 ## Requisitos
 
 * Contenedor **Docker** versión 18 o superior.
@@ -114,26 +139,12 @@ $ firefox http://localhost:5000/test/hello
 **Nota**: Al acceder la **1era** ves a la URL http://localhost:5000/test/hello, este ejecución se demorará dado que esta creado una imagen Docker como compilando el código para la prestación del servicio. Las siguientes cambios o ejecuciones serán mejor tiempo. Cada ves que se cambie el lenguaje de codificación, la 1era ves pasará esto.
 
 ### Ultimo detalles:
-El archivo **.gitignore** dede tener las siguientes lineas:
+El archivo **.gitignore** debe agregar las siguientes lineas:
 ```txt
 # Distribution / packaging
-.Python
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-*.egg-info/
-.installed.cfg
-*.egg
-
+.
+.
+.
 # Serverless directories
 .serverless
 node_modules
@@ -148,6 +159,7 @@ $ npm install serverless-s3-local --save-dev
 $ serverless plugin install -n serverless-s3-local
 ```
 Ejemplo de Configuración
+- **handler.yml**
 ```yml
 service: lambdawiki
 provider:
@@ -227,7 +239,7 @@ Ejemplo de Configuración
 ```
 - **handler.yml**
 ```yml
-(pendinte)
+(pendiente)
 ```
 
 ### Soporte Acceso a MySQL desde AWS Python Lambda:
@@ -267,9 +279,83 @@ except:
 logger.info("SUCCESS: Connection to RDS mysql instance succeeded")
 ```
 
+### Instalando Cloud9 Localmente:
+Crear un directorio para la instalación de Cloud9 Localmente:
+```sh
+$ mkdir cloud9
+$ git clone https://github.com/c9/core.git c9sdk
+$ cd c9sdk
+$ scripts/install-sdk.sh
+```
+Ejecutando Cloud9 Localmente:
+```sh
+$ node server.js
+```
+Accediendo a CLoud9 Localmente:
+```sh
+$ firefox  http://localhost:8181/ide.html
+```
+Si deseas iniciar en tu direcorio de proyecto el IDE de Cloud9, debes iniciar el servidor node con el siguiente parametro:
+-w: Diretorio de trabajo.
+```sh
+$ node server.js -w /<miruta>/<miproyecto>
+$ firefox  http://localhost:8181/ide.html
+```
+
+### Instalando DynamoDB Localmente con Docker-Compose:
+Crear un directorio para el Contenedor Docker de DynamoDB.
+
+```sh
+$ mkdir -p dck_Dynamobd/db_data
+$ cd dck_Dynamobd
+$ vi docker-compose.yml
+```
+- **docker-compose.yml**
+```txt
+version: '3'
+services:
+  db_dynamodb:
+    container_name: db_dynamodb
+    image: amazon/dynamodb-local:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - "/dockerImg/10.Docker/dynamodb/db_data:/data"
+```
+Crear el Contenedor Docker.
+```sh
+$ docker-composer up -d
+```
+Accediendo a DynamoDB Localmente con el AWS CLI:
+* Listar las Tablas Existentes
+```sh
+$ aws dynamodb list-tables --endpoint-url http://localhost:8000
+```
+* Estructura de una  Tablas Existentes:
+```sh
+$ aws dynamodb describe-table --table-name <TablaName> --endpoint-url http://localhost:8000
+```
+* Estado de una  Tablas Existentes:
+```sh
+$ aws dynamodb describe-table --table-name $1 --endpoint-url http://localhost:8000 | grep TableStatus
+```
+* Crear una Tabla DynamoDB:
+```sh
+$ aws dynamodb create-table --table-name cliente \
+  --attribute-definitions \
+        AttributeName=Id,AttributeType=N \
+        AttributeName=Rut,AttributeType=S \
+        AttributeName=Nombre,AttributeType=S \
+        AttributeName=Apellido,AttributeType=S \
+  --key-schema \
+        AttributeName=Id,KeyType=HASH \
+        AttributeName=Id,KeyType=RANGE \
+  --provisioned-throughput ReadCapacityUnits=10,WriteCapacityUnits=5 \
+  --endpoint-url http://localhost:8000
+```
+
 
 ## SACACIngeniería
 ### SACACI Chile
-
 
 
